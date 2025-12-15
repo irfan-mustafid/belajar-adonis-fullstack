@@ -8,5 +8,10 @@
 */
 
 import router from '@adonisjs/core/services/router'
-router.on('/').renderInertia('home')
 
+// Guest routes
+router.on('/').renderInertia('login')
+router.get('/login', ({ inertia }) => inertia.render('login')).as('login')
+
+// Protected routes
+router.get('/dashboard', ({ inertia }) => inertia.render('dashboard')).as('dashboard')
