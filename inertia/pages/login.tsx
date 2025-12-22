@@ -2,9 +2,14 @@ import { Head, useForm } from '@inertiajs/react'
 import GuestLayout from '~/layouts/GuestLayout'
 import { Input, Button, Card, CardBody } from '@heroui/react'
 
-export default function Login() {
-  const { data, setData, post, processing, errors } = useForm({
-    email: '',
+interface FormLogin {
+  username: string
+  password: string
+}
+
+const Login = () => {
+  const { data, setData, post, processing, errors } = useForm<FormLogin>({
+    username: '',
     password: '',
   })
 
@@ -17,7 +22,10 @@ export default function Login() {
     <GuestLayout>
       <Head title="Login" />
 
-      <Card shadow="lg" className="w-full">
+      <Card
+        shadow="lg"
+        className="w-full bg-white max-w-md rounded-2xl border border-gray-300 shadow-2xs"
+      >
         <CardBody className="gap-4 p-8">
           <div className="text-center mb-4">
             <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
@@ -26,29 +34,30 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
             <Input
-              type="email"
-              //   label="Email"
-              placeholder="your@email.com"
-              value={data.email}
-              onChange={(e) => setData('email', e.target.value)}
-              isInvalid={!!errors.email}
-              errorMessage={errors.email}
-              variant="bordered"
-              size="lg"
               isRequired
+              errorMessage={errors.username}
+              isInvalid={!!errors.username}
+              className="border rounded-md"
+              labelPlacement="outside"
+              name="username"
+              placeholder="Enter your username"
+              type="text"
+              size="lg"
+              value={data.username}
+              onChange={(e) => setData({ ...data, username: e.target.value })}
             />
 
             <Input
               type="password"
-              //   label="Password"
               placeholder="Enter your password"
-              value={data.password}
-              onChange={(e) => setData('password', e.target.value)}
-              isInvalid={!!errors.password}
-              errorMessage={errors.password}
-              variant="bordered"
+              className="border rounded-md"
               size="lg"
               isRequired
+              name="password"
+              value={data.password}
+              onChange={(e) => setData({ ...data, password: e.target.value })}
+              errorMessage={errors.password}
+              isInvalid={!!errors.password}
             />
 
             <Button
@@ -56,7 +65,7 @@ export default function Login() {
               color="primary"
               size="lg"
               isLoading={processing}
-              className="w-full mt-2"
+              className="w-full mt-2 rounded-md"
             >
               Sign In
             </Button>
@@ -66,3 +75,5 @@ export default function Login() {
     </GuestLayout>
   )
 }
+
+export default Login

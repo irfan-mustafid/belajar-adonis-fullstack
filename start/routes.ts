@@ -8,10 +8,21 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import { middleware } from '#start/kernel'
 
-// Guest routes
-router.on('/').renderInertia('login')
-router.get('/login', ({ inertia }) => inertia.render('login')).as('login')
+const AuthController = () => import('#controllers/auth_controller')
 
-// Protected routes
-router.get('/dashboard', ({ inertia }) => inertia.render('dashboard')).as('dashboard')
+router
+  .get('/', async ({ inertia }) => {
+    return inertia.render('login')
+  })
+  .as('login')
+
+router.post('/login', [AuthController, 'login']).as('login.post')
+
+router
+  .get('/dashboard', async ({ inertia }) => {
+    return inertia.render('dashboard')
+  })
+  .as('dashboard')
+  .use(middleware.auth({ guards: ['web'] }))
