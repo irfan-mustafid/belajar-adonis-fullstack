@@ -19,7 +19,7 @@ router
   .as('login')
 
 router.post('/login', [AuthController, 'login']).as('login.post')
-
+router.post('/logout', [AuthController, 'logout']).as('logout')
 router
   .get('/dashboard', async ({ inertia }) => {
     return inertia.render('dashboard')
