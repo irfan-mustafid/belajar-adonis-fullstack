@@ -1,4 +1,4 @@
-import type { HttpContext } from '@adonisjs/core/http'
+import { type HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import crypto from 'node:crypto'
 
@@ -7,6 +7,9 @@ export default class AuthController {
     const username = request.input('username')
     const password = request.input('password')
 
+    if (!username || !password) {
+      return response.redirect().toRoute('login')
+    }
     try {
       const user = await User.findBy('username', username)
 

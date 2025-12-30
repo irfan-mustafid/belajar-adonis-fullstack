@@ -1,10 +1,11 @@
 import { Head, useForm } from '@inertiajs/react'
 import GuestLayout from '~/layouts/GuestLayout'
-import { Input, Button, Card, CardBody } from '@heroui/react'
+import { Input, Button, Card, CardBody, Form } from '@heroui/react'
 
 interface FormLogin {
   username: string
   password: string
+  [key: string]: string
 }
 
 const Login = () => {
@@ -32,13 +33,13 @@ const Login = () => {
             <p className="text-gray-600 mt-2">Sign in to your account</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
+          <Form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
             <Input
               isRequired
               errorMessage={errors.username}
               isInvalid={!!errors.username}
               className="border rounded-md"
-              labelPlacement="outside"
+              // labelPlacement="outside"
               name="username"
               placeholder="Enter your username"
               type="text"
@@ -69,7 +70,7 @@ const Login = () => {
             >
               Sign In
             </Button>
-          </form>
+          </Form>
         </CardBody>
       </Card>
     </GuestLayout>

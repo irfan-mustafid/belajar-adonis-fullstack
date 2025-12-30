@@ -1,6 +1,6 @@
 import ReactDOMServer from 'react-dom/server'
 import { createInertiaApp } from '@inertiajs/react'
-import { HeroUIProvider } from '@heroui/react'
+import AppProviders from '../components/AppProviders'
 
 export default function render(page: any) {
   return createInertiaApp({
@@ -11,9 +11,9 @@ export default function render(page: any) {
       return pages[`../pages/${name}.tsx`]
     },
     setup: ({ App, props }) => (
-      <HeroUIProvider>
+      <AppProviders>
         <App {...props} />
-      </HeroUIProvider>
+      </AppProviders>
     ),
   })
 }

@@ -5,8 +5,9 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  User,
 } from '@heroui/react'
-import { Moon, Sun } from 'lucide-react'
+import { Moon, Sun, LogOut } from 'lucide-react'
 import { useTheme } from '~/contexts/ThemeContext'
 
 interface HeaderProps {
@@ -38,17 +39,28 @@ export default function Header({ title = 'Dashboard', userName = 'User' }: Heade
           {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
         </Button>
 
-        <Dropdown>
-          <DropdownTrigger>
-            <Avatar as="button" size="sm" name={userName} className="cursor-pointer" />
-          </DropdownTrigger>
-          <DropdownMenu aria-label="User Menu">
-            <DropdownItem key="profile">Profile</DropdownItem>
-            <DropdownItem key="logout" className="text-danger">
-              Logout
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        <div className="flex items-center gap-4">
+          <Dropdown placement="bottom-end" className="bg-slate-900 rounded-md">
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownItem
+                key="logout"
+                color="success"
+                startContent={<LogOut size={18} />}
+                href="/logout"
+              >
+                Log Out
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
     </header>
   )
