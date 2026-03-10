@@ -5,10 +5,11 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
-  User,
+  // User,
 } from '@heroui/react'
 import { Moon, Sun, LogOut } from 'lucide-react'
 import { useTheme } from '~/contexts/ThemeContext'
+import { router } from '@inertiajs/react'
 
 interface HeaderProps {
   title?: string
@@ -54,7 +55,7 @@ export default function Header({ title = 'Dashboard', userName = 'User' }: Heade
                 key="logout"
                 color="success"
                 startContent={<LogOut size={18} />}
-                href="/logout"
+                onPress={() => router.post('/logout')}
               >
                 Log Out
               </DropdownItem>

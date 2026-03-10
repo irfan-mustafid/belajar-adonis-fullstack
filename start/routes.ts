@@ -25,7 +25,10 @@ router
   .as('login')
 
 router.post('/login', [AuthController, 'login']).as('login.post')
-router.get('/logout', [AuthController, 'logout']).as('logout')
+router
+  .post('/logout', [AuthController, 'logout'])
+  .as('logout')
+  .use(middleware.auth({ guards: ['web'] }))
 router
   .get('/dashboard', async ({ inertia }) => {
     return inertia.render('dashboard')

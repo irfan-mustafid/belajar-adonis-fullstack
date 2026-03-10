@@ -1,5 +1,7 @@
 import { type HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
+import hash from '@adonisjs/core/services/hash'
+import logger from '@adonisjs/core/services/logger'
 import crypto from 'node:crypto'
 
 export default class AuthController {
@@ -23,10 +25,16 @@ export default class AuthController {
       let isPasswordValid = false
 
       if (isMD5) {
-        // Verify MD5 password
+        // Verify legacy MD5 password
         const md5Hash = crypto.createHash('md5').update(password).digest('hex')
-
         isPasswordValid = md5Hash === user.password
+
+        if (isPasswordValid) {
+          // Migrate to secure scrypt hash
+          user.password = await hash.make(password)
+          await user.save()
+          logger.info({ username: user.username }, 'Migrated password from MD5 to scrypt')
+        }
       } else {
         // Verify with default scrypt
         const userVerified = await User.verifyCredentials(username, password)
@@ -40,6 +48,7 @@ export default class AuthController {
       await auth.use('web').login(user)
       return response.redirect().toRoute('dashboard')
     } catch (error) {
+      logger.warn({ username, error: (error as Error).message }, 'Failed login attempt')
       session.flash('errors', {
         username: 'Invalid user credentials',
       })
